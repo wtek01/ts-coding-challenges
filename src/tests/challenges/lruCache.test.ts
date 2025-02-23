@@ -1,4 +1,4 @@
-import lruCache from "../../challenges/lruCache";
+import lruCache from "../../algorithms/lruCache";
 
 describe("LRUCache", () => {
   test("should handle basic get and set operations", () => {

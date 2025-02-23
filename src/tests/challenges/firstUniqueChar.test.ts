@@ -1,4 +1,4 @@
-import { firstUniqueChar } from "../../challenges/firstUniqueChar";
+import { firstUniqueChar } from "../../algorithms/firstUniqueChar";
 
 describe("firstUniqueChar", () => {
   test("should find first non-repeating character", () => {

@@ -48,4 +48,8 @@ export default class lruCache {
   clear(): void {
     this.cache.clear();
   }
+
+  getKeys(): string[] {
+    return Array.from(this.cache.keys());
+  }
 }

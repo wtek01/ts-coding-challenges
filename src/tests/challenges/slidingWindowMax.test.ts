@@ -1,4 +1,4 @@
-import { slidingWindowMax } from "../../challenges/slidingWindowMax";
+import { slidingWindowMax } from "../../algorithms/slidingWindowMax";
 
 describe("slidingWindowMax", () => {
   test("should handle empty array", () => {
