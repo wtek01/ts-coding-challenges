@@ -3,8 +3,9 @@ import lruCache from "./algorithms/lruCache";
 import { mergeSort } from "./algorithms/mergeSort";
 import { slidingWindowMax } from "./algorithms/slidingWindowMax";
 import { EventEmitter } from "./system-design/event-emitter/eventEmitter";
+import { JobQueue } from "./system-design/job-queue/jobQueue";
 import { startServer } from "./system-design/rate-limiter/server";
-import { testRateLimiter } from "./tests/system-design/rateLimiter.test";
+import { testRateLimiter } from "./tests/system-design/rateLimiter.manual";
 // Select the challenge to run
 const challengeToRun = process.argv[2];
 
@@ -41,6 +42,9 @@ switch (challengeToRun) {
       console.log("🚀 Starting Rate Limiter Server...");
       startServer();
     }
+    break;
+  case "jobQueue":
+    testParallelJobQueue();
     break;
   default:
     console.log("❌ Please specify a valid challenge to run.");
@@ -131,4 +135,37 @@ function testEventEmitter() {
   emitter.once("farewell", (name) => console.log(`Goodbye, ${name}!`));
   emitter.emit("farewell", "Alice"); // Will print "Goodbye, Alice!"
   emitter.emit("farewell", "Bob"); // Nothing happens - listener was removed after first use
+}
+
+function testParallelJobQueue() {
+  const queue = new JobQueue(2);
+
+  const job1 = () =>
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        console.log(`⚙️ Job 1 executing task... (Duration: 2000ms)`);
+        resolve();
+      }, 2000);
+    });
+
+  const job2 = () =>
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        console.log(`⚙️ Job 2 executing task... (Duration: 1000ms)`);
+        resolve();
+      }, 1000);
+    });
+
+  const job3 = () =>
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        console.log(`⚙️ Job 3 executing task... (Duration: 1500ms)`);
+        resolve();
+      }, 1500);
+    });
+
+  queue.addJob(job1, 2);
+  queue.addJob(job2, 1);
+  queue.addJob(job3, 3);
+  queue.start();
 }
