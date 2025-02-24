@@ -3,7 +3,8 @@ import lruCache from "./algorithms/lruCache";
 import { mergeSort } from "./algorithms/mergeSort";
 import { slidingWindowMax } from "./algorithms/slidingWindowMax";
 import { EventEmitter } from "./system-design/event-emitter/eventEmitter";
-import { JobQueue } from "./system-design/job-queue/jobQueue";
+import { InMemoryJobQueue } from "./system-design/job-queue/InMemoryJobQueue";
+import { PersistentRedisJobQueue } from "./system-design/job-queue/persistent/RedisJobQueue";
 import { startServer } from "./system-design/rate-limiter/server";
 import { testRateLimiter } from "./tests/system-design/rateLimiter.manual";
 // Select the challenge to run
@@ -43,8 +44,11 @@ switch (challengeToRun) {
       startServer();
     }
     break;
-  case "jobQueue":
-    testParallelJobQueue();
+  case "inMemoryJobQueue":
+    testInMemoryJobQueue();
+    break;
+  case "persistentRedisJobQueue":
+    testPersistentRedisJobQueue();
     break;
   default:
     console.log("❌ Please specify a valid challenge to run.");
@@ -137,8 +141,8 @@ function testEventEmitter() {
   emitter.emit("farewell", "Bob"); // Nothing happens - listener was removed after first use
 }
 
-function testParallelJobQueue() {
-  const queue = new JobQueue(2);
+function testInMemoryJobQueue() {
+  const queue = new InMemoryJobQueue(2);
 
   const job1 = () =>
     new Promise<void>((resolve) => {
@@ -168,4 +172,13 @@ function testParallelJobQueue() {
   queue.addJob(job2, 1);
   queue.addJob(job3, 3);
   queue.start();
+}
+
+async function testPersistentRedisJobQueue() {
+  const queue = new PersistentRedisJobQueue(3);
+
+  await queue.addJob(2000, 2); // Job 1: 2 secondes
+  await queue.addJob(1000, 1); // Job 2: 1 seconde
+  await queue.addJob(1500, 3); // Job 3: 1.5 secondes
+  await queue.close();
 }

@@ -1,4 +1,4 @@
-export class JobQueue {
+export class InMemoryJobQueue {
   private queue: Array<{
     id: string;
     job: () => Promise<void>;

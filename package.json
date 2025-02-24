@@ -23,6 +23,8 @@
   "dependencies": {
     "@types/axios": "^0.9.36",
     "axios": "^1.7.9",
-    "express": "^4.21.2"
+    "bull": "^4.16.5",
+    "express": "^4.21.2",
+    "ioredis": "^5.5.0"
   }
 }
