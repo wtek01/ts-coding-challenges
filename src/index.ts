@@ -2,6 +2,10 @@ import { firstUniqueChar } from "./algorithms/firstUniqueChar";
 import lruCache from "./algorithms/lruCache";
 import { mergeSort } from "./algorithms/mergeSort";
 import { slidingWindowMax } from "./algorithms/slidingWindowMax";
+import {
+  Dev,
+  setPermissions,
+} from "./exercises/interfaces-types/detailed/personEmployeeDetailed";
 import { EventEmitter } from "./system-design/event-emitter/eventEmitter";
 import { InMemoryJobQueue } from "./system-design/job-queue/InMemoryJobQueue";
 import { PersistentRedisJobQueue } from "./system-design/job-queue/persistent/RedisJobQueue";
@@ -49,6 +53,9 @@ switch (challengeToRun) {
     break;
   case "persistentRedisJobQueue":
     testPersistentRedisJobQueue();
+    break;
+  case "personEmployeeDetailed":
+    testPersonEmployeeDetailed();
     break;
   default:
     console.log("❌ Please specify a valid challenge to run.");
@@ -181,4 +188,36 @@ async function testPersistentRedisJobQueue() {
   await queue.addJob(1000, 1); // Job 2: 1 seconde
   await queue.addJob(1500, 3); // Job 3: 1.5 secondes
   await queue.close();
+}
+
+function testPersonEmployeeDetailed() {
+  console.log("\n🧪 Testing PersonEmployeeDetailed...");
+
+  // Test 1: Création d'un Dev avec âge
+  const alice = new Dev(101, "Alice", "Software Engineer", 25);
+  console.log("\n✨ Test Dev avec âge:");
+  console.log(alice.getDescription()); // Alice (101) est Software Engineer et a 25 ans.
+
+  // Test 2: Création d'un Dev sans âge
+  const bob = new Dev(102, "Bob", "Frontend Developer");
+  console.log("\n✨ Test Dev sans âge:");
+  console.log(bob.getDescription()); // Bob (102) est Frontend Developer
+
+  // Test 3: Permissions Admin
+  console.log("\n✨ Test permissions Admin:");
+  console.log(
+    setPermissions(alice, {
+      isAdmin: true,
+      superAccess: true,
+    })
+  );
+
+  // Test 4: Permissions Standard
+  console.log("\n✨ Test permissions Standard:");
+  console.log(
+    setPermissions(bob, {
+      isAdmin: false,
+      restrictedAreas: ["AdminPanel", "Payments"],
+    })
+  );
 }
