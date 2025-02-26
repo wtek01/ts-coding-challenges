@@ -42,7 +42,7 @@ export function demonstrateArrays() {
   console.log("Itération foreach:");
   numbers.forEach((num, index) => {
     console.log(`  numbers[${index}] = ${num}`);
-  });
+  }); // 1, 2, 10, 11, 5
 
   // Ajout d'une variable index dans la boucle for...of
   console.log("Itération for...of:");

@@ -2,6 +2,14 @@ import { firstUniqueChar } from "./algorithms/firstUniqueChar";
 import lruCache from "./algorithms/lruCache";
 import { mergeSort } from "./algorithms/mergeSort";
 import { slidingWindowMax } from "./algorithms/slidingWindowMax";
+import { displayBrandCounts } from "./api/brandCounts";
+import {
+  countWithFilter,
+  countWithForEach,
+  countWithForOf,
+  countWithMap,
+  countWithReduce,
+} from "./api/brandCountsComparison";
 import {
   Dev,
   setPermissions,
@@ -21,6 +29,105 @@ switch (challengeToRun) {
     console.log(firstUniqueChar("developer")); // Expected: "d"
     console.log(firstUniqueChar("abacabad")); // Expected: "c"
     console.log(firstUniqueChar("abcdef")); // Expected: "a"
+    break;
+  case "brandCounts":
+    console.log("🔍 Fetching and displaying brand counts...");
+    displayBrandCounts();
+    break;
+  case "brandCountsMethod":
+    // Get the method from command line arguments
+    const method = process.argv[3] || "reduce"; // Default to reduce if no method specified
+    console.log(`🔍 Running brand counting with method: ${method}`);
+
+    switch (method) {
+      case "reduce":
+        countWithReduce().then((result) => {
+          console.log("Results using reduce method:");
+          console.log(result);
+          console.log("\nPROS:");
+          console.log("- Concise and functional programming style");
+          console.log("- Single pass through the data (O(n) complexity)");
+          console.log(
+            "- Expressive and readable for developers familiar with functional programming"
+          );
+          console.log("\nCONS:");
+          console.log("- May be less intuitive for beginners");
+          console.log(
+            "- Requires understanding of how accumulator works in reduce"
+          );
+        });
+        break;
+      case "forEach":
+        countWithForEach().then((result) => {
+          console.log("Results using forEach method:");
+          console.log(result);
+          console.log("\nPROS:");
+          console.log(
+            "- More explicit and easier to understand for most developers"
+          );
+          console.log(
+            "- Good for those familiar with imperative programming style"
+          );
+          console.log("- Clear step-by-step logic that's easy to follow");
+          console.log("\nCONS:");
+          console.log("- Slightly more verbose than the reduce approach");
+          console.log("- Less functional in style");
+          console.log("- Relies on mutating an external object");
+        });
+        break;
+      case "map":
+        countWithMap().then((result) => {
+          console.log("Results using Map data structure:");
+          console.log(Object.fromEntries(result));
+          console.log("\nPROS:");
+          console.log("- Map preserves insertion order");
+          console.log(
+            "- Better for key iteration and has built-in size property"
+          );
+          console.log("- Can use any type as keys (not just strings)");
+          console.log("\nCONS:");
+          console.log(
+            "- Requires conversion to object if JSON serialization needed"
+          );
+          console.log("- Less familiar syntax for some developers");
+        });
+        break;
+      case "filter":
+        countWithFilter().then((result) => {
+          console.log("Results using filter method:");
+          console.log(result);
+          console.log("\nPROS:");
+          console.log(
+            "- Very explicit approach that clearly shows what's happening"
+          );
+          console.log(
+            "- Uses modern JavaScript features (Set, spread operator)"
+          );
+          console.log("\nCONS:");
+          console.log("- Least efficient - O(n²) complexity");
+          console.log("- Creates unnecessary intermediate arrays");
+          console.log("- Not suitable for large datasets");
+        });
+        break;
+      case "forOf":
+        countWithForOf().then((result) => {
+          console.log("Results using for...of loop:");
+          console.log(result);
+          console.log("\nPROS:");
+          console.log("- Traditional loop approach that's very explicit");
+          console.log("- Straightforward and easy to understand");
+          console.log(
+            "- Familiar syntax for developers from many language backgrounds"
+          );
+          console.log("\nCONS:");
+          console.log("- Less functional style");
+          console.log("- Relies on mutating an external object");
+        });
+        break;
+      default:
+        console.log(`❌ Unknown method: ${method}`);
+        console.log("Available methods: reduce, forEach, map, filter, forOf");
+    }
     break;
   case "slidingWindowMax":
     console.log(slidingWindowMax([1, 3, -1, -3, 5, 3, 6, 7], 3)); // Expected: [3, 3, 5, 5, 6, 7]
